@@ -1,6 +1,8 @@
 package com.samsonmarikwa.restservices.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -17,9 +19,14 @@ public class User {
    @Id
    @GeneratedValue
    private Long id;
+   
+   @NotEmpty(message="Username is a mandatory field. Please provide username")
    @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
    private String username;
+   
+   @Size(min=2, message="FirstName should have at least 2 characters")
    @Column(name = "FIRST_NAME", length = 50, nullable = false)
+   
    private String firstname;
    @Column(name = "LAST_NAME", length = 50, nullable = false)
    private String lastname;
