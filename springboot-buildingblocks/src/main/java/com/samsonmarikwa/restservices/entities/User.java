@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 @Entity
 /* gives the name by which the class will be known in the database & in HQL / JPQL queries */
 //@Entity(name = "Users")
@@ -34,6 +36,9 @@ public class User {
    private String role;
    @Column(name = "SSN", length = 50, nullable = false, unique = true)
    private String ssn;
+   
+   @OneToMany(mappedBy = "user")
+   private List<Order> orders;
    
    public User() {
    }
@@ -104,6 +109,14 @@ public class User {
       this.ssn = ssn;
    }
    
+   public List<Order> getOrders() {
+      return orders;
+   }
+   
+   public void setOrders(List<Order> orders) {
+      this.orders = orders;
+   }
+   
    @Override
    public String toString() {
       return "User[" +
@@ -114,6 +127,7 @@ public class User {
             ", email='" + email + '\'' +
             ", role='" + role + '\'' +
             ", ssn='" + ssn + '\'' +
+            ", orders=" + orders +
             ']';
    }
 }

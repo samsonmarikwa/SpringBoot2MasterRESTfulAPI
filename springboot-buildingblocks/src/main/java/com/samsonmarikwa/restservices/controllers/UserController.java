@@ -21,17 +21,18 @@ import java.util.Optional;
 
 @RestController
 @Validated
+@RequestMapping("/users")
 public class UserController {
    
    @Autowired
    private UserService userService;
    
-   @GetMapping("/users")
+   @GetMapping
    public List<User> getAllUsers() {
       return userService.getAllUsers();
    }
    
-   @PostMapping("/users")
+   @PostMapping
    // @Valid is required for JSR Bean validation to kick in. It works with @NotEmpty etc. implemented in the POJO
    public ResponseEntity<?> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
       try {
@@ -44,7 +45,7 @@ public class UserController {
       }
    }
    
-   @GetMapping("/users/{id}")
+   @GetMapping("/{id}")
    public Optional<User> getUserById(@PathVariable @Min(1) long id) {  // @Min requires @Validated annotation at class level
       try {
          return userService.getUserById(id);
@@ -54,7 +55,7 @@ public class UserController {
       
    }
    
-   @PutMapping("/users/{id}")
+   @PutMapping("/{id}")
    public User updateUserById(@PathVariable long id, @RequestBody User user) {
       try {
          return userService.updateUserById(id, user);
@@ -63,12 +64,12 @@ public class UserController {
       }
    }
    
-   @DeleteMapping("/users/{id}")
+   @DeleteMapping("/{id}")
    public void deleteUserById(@PathVariable long id) {
       userService.deleteUserById(id);
    }
    
-   @GetMapping("/users/byusername/{username}")
+   @GetMapping("/byusername/{username}")
    public User getUserByUsername(@PathVariable String username) throws UsernameNotFoundException {
       User user = userService.getUserByUsername(username);
       if (user == null) {
@@ -78,7 +79,7 @@ public class UserController {
       }
    }
    
-   @GetMapping("/users/bylastname/{lastname}")
+   @GetMapping("/bylastname/{lastname}")
    public List<User> getUsersByLastname(@PathVariable String lastname) {
       return userService.getUsersByLastname(lastname);
    }
