@@ -3,11 +3,15 @@ package com.samsonmarikwa.restservices.controllers;
 import com.samsonmarikwa.restservices.entities.User;
 import com.samsonmarikwa.restservices.exceptions.UserExistsException;
 import com.samsonmarikwa.restservices.exceptions.UserNotFoundException;
+import com.samsonmarikwa.restservices.exceptions.UsernameNotFoundException;
 import com.samsonmarikwa.restservices.services.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Validated
 public class UserController {
    
    @Autowired
@@ -27,7 +32,8 @@ public class UserController {
    }
    
    @PostMapping("/users")
-   public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder builder) {
+   // @Valid is required for JSR Bean validation to kick in. It works with @NotEmpty etc. implemented in the POJO
+   public ResponseEntity<?> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
       try {
          userService.createUser(user);
          HttpHeaders httpHeaders = new HttpHeaders();
@@ -39,7 +45,7 @@ public class UserController {
    }
    
    @GetMapping("/users/{id}")
-   public Optional<User> getUserById(@PathVariable long id) {
+   public Optional<User> getUserById(@PathVariable @Min(1) long id) {  // @Min requires @Validated annotation at class level
       try {
          return userService.getUserById(id);
       } catch (UserNotFoundException ex) {
@@ -63,8 +69,13 @@ public class UserController {
    }
    
    @GetMapping("/users/byusername/{username}")
-   public User getUserByUsername(@PathVariable String username) {
-      return userService.getUserByUsername(username);
+   public User getUserByUsername(@PathVariable String username) throws UsernameNotFoundException {
+      User user = userService.getUserByUsername(username);
+      if (user == null) {
+         throw new UsernameNotFoundException("Username: " + username + " not found in repository");
+      } else {
+         return user;
+      }
    }
    
    @GetMapping("/users/bylastname/{lastname}")
