@@ -1,5 +1,7 @@
 package com.samsonmarikwa.restservices.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.util.List;
    have to use the class name or the @Entity name
 */
 @Table(name = "USERS")
+@JsonIgnoreProperties({"firstname", "lastname"})
 public class User extends RepresentationModel<User> {
 
    @Id
@@ -30,11 +33,14 @@ public class User extends RepresentationModel<User> {
    
    private String firstname;
    @Column(name = "LAST_NAME", length = 50, nullable = false)
+   
    private String lastname;
    @Column(name = "EMAIL_ADDRESS", length = 50, nullable = false)
    private String email;
    @Column(name = "ROLE", length = 50, nullable = false)
    private String role;
+   
+   @JsonIgnore
    @Column(name = "SSN", length = 50, nullable = false, unique = true)
    private String ssn;
    
