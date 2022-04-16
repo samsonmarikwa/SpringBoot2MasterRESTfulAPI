@@ -1,5 +1,7 @@
 package com.samsonmarikwa.restservices.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
@@ -15,6 +17,7 @@ import java.util.List;
    have to use the class name or the @Entity name
 */
 @Table(name = "USERS")
+@JsonIgnoreProperties({"firstname", "lastname"})
 public class User extends RepresentationModel<User> {
 
    @Id
@@ -26,16 +29,20 @@ public class User extends RepresentationModel<User> {
    private String username;
    
    @Size(min=2, message="FirstName should have at least 2 characters")
-   @Column(name = "FIRST_NAME", length = 50, nullable = false)
+   // I have changed nullable to true so as to create the record during POST because JsonIgnore will put a null value
+   @Column(name = "FIRST_NAME", length = 50, nullable = true)
    
    private String firstname;
-   @Column(name = "LAST_NAME", length = 50, nullable = false)
+   @Column(name = "LAST_NAME", length = 50, nullable = true)
+   
    private String lastname;
    @Column(name = "EMAIL_ADDRESS", length = 50, nullable = false)
    private String email;
    @Column(name = "ROLE", length = 50, nullable = false)
    private String role;
-   @Column(name = "SSN", length = 50, nullable = false, unique = true)
+   
+   @JsonIgnore
+   @Column(name = "SSN", length = 50, nullable = true, unique = true)
    private String ssn;
    
    @OneToMany(mappedBy = "user")
