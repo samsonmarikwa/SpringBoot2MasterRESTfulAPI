@@ -5,8 +5,6 @@ import com.samsonmarikwa.restservices.exceptions.UserExistsException;
 import com.samsonmarikwa.restservices.exceptions.UserNotFoundException;
 import com.samsonmarikwa.restservices.exceptions.UsernameNotFoundException;
 import com.samsonmarikwa.restservices.services.UserService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +38,7 @@ public class UserController {
       try {
          userService.createUser(user);
          HttpHeaders httpHeaders = new HttpHeaders();
-         httpHeaders.setLocation(builder.path("/users/{id}").buildAndExpand(user.getId()).toUri());
+         httpHeaders.setLocation(builder.path("/users/{id}").buildAndExpand(user.getUserId()).toUri());
          return new ResponseEntity<Void>(httpHeaders, HttpStatus.CREATED);
       } catch (UserExistsException ex) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -52,7 +52,6 @@ public class UserController {
       } catch (UserNotFoundException ex) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
       }
-      
    }
    
    @PutMapping("/{id}")

@@ -1,11 +1,13 @@
 package com.samsonmarikwa.restservices.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends RepresentationModel<Order> {
    @Id
    @GeneratedValue
    private Long orderid;
@@ -16,6 +18,12 @@ public class Order {
    private User user;
    
    public Order() {
+   }
+   
+   public Order(Long orderid, String orderdescription, User user) {
+      this.orderid = orderid;
+      this.orderdescription = orderdescription;
+      this.user = user;
    }
    
    public Long getOrderid() {
@@ -41,4 +49,5 @@ public class Order {
    public void setUser(User user) {
       this.user = user;
    }
+   
 }
