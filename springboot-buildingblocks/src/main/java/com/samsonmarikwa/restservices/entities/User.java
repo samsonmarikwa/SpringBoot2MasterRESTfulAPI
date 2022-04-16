@@ -29,10 +29,11 @@ public class User extends RepresentationModel<User> {
    private String username;
    
    @Size(min=2, message="FirstName should have at least 2 characters")
-   @Column(name = "FIRST_NAME", length = 50, nullable = false)
+   // I have changed nullable to true so as to create the record during POST because JsonIgnore will put a null value
+   @Column(name = "FIRST_NAME", length = 50, nullable = true)
    
    private String firstname;
-   @Column(name = "LAST_NAME", length = 50, nullable = false)
+   @Column(name = "LAST_NAME", length = 50, nullable = true)
    
    private String lastname;
    @Column(name = "EMAIL_ADDRESS", length = 50, nullable = false)
@@ -41,7 +42,7 @@ public class User extends RepresentationModel<User> {
    private String role;
    
    @JsonIgnore
-   @Column(name = "SSN", length = 50, nullable = false, unique = true)
+   @Column(name = "SSN", length = 50, nullable = true, unique = true)
    private String ssn;
    
    @OneToMany(mappedBy = "user")
