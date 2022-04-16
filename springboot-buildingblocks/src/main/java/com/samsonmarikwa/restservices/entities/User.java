@@ -1,9 +1,10 @@
 package com.samsonmarikwa.restservices.entities;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import org.springframework.hateoas.RepresentationModel;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -14,11 +15,11 @@ import java.util.List;
    have to use the class name or the @Entity name
 */
 @Table(name = "USERS")
-public class User {
+public class User extends RepresentationModel<User> {
 
    @Id
    @GeneratedValue
-   private Long id;
+   private Long userId;
    
    @NotEmpty(message="Username is a mandatory field. Please provide username")
    @Column(name = "USER_NAME", length = 50, nullable = false, unique = true)
@@ -43,8 +44,8 @@ public class User {
    public User() {
    }
    
-   public User(Long id, String username, String firstname, String lastname, String email, String role, String ssn) {
-      this.id = id;
+   public User(Long userId, String username, String firstname, String lastname, String email, String role, String ssn) {
+      this.userId = userId;
       this.username = username;
       this.firstname = firstname;
       this.lastname = lastname;
@@ -53,12 +54,12 @@ public class User {
       this.ssn = ssn;
    }
    
-   public Long getId() {
-      return id;
+   public Long getUserId() {
+      return userId;
    }
    
-   public void setId(Long id) {
-      this.id = id;
+   public void setUserId(Long userId) {
+      this.userId = userId;
    }
    
    public String getUsername() {
@@ -120,7 +121,7 @@ public class User {
    @Override
    public String toString() {
       return "User[" +
-            "id=" + id +
+            "userId=" + userId +
             ", username='" + username + '\'' +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
