@@ -1,6 +1,6 @@
-insert into users values(101, 'samm@outlook.com', 'Samson', 'Marikwa', 'admin', 'ssn101','samm');
-insert into users values(102, 'walm@outlook.com', 'Walter', 'Marikwa', 'admin', 'ssn102', 'walm');
-insert into users values(103, 'annm@outlook.com', 'Annet', 'Marikwa', 'admin', 'ssn103', 'annm');
+insert into users values(101, 'Charlotte', 'samm@outlook.com', 'Samson', 'Marikwa', 'admin', 'ssn101','samm');
+insert into users values(102, 'Matthews', 'walm@outlook.com', 'Walter', 'Marikwa', 'admin', 'ssn102', 'walm');
+insert into users values(103, 'Atlanta', 'annm@outlook.com', 'Annet', 'Marikwa', 'admin', 'ssn103', 'annm');
 
 insert into orders values(2001, 'order11', 101);
 insert into orders values(2002, 'order12', 101);
