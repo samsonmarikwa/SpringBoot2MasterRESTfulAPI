@@ -5,9 +5,13 @@ import com.samsonmarikwa.restservices.exceptions.UserExistsException;
 import com.samsonmarikwa.restservices.exceptions.UserNotFoundException;
 import com.samsonmarikwa.restservices.exceptions.UsernameNotFoundException;
 import com.samsonmarikwa.restservices.services.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 
+@Api(tags = "User Management RESTful Services", value = "UserController", description = "Controller for User Management Service")
 @RestController
 @Validated
 @RequestMapping("/users")
@@ -27,14 +32,16 @@ public class UserController {
    @Autowired
    private UserService userService;
    
-   @GetMapping
+   @ApiOperation(value = "Retrieve list of users")
+   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
    public List<User> getAllUsers() {
       return userService.getAllUsers();
    }
    
+   @ApiOperation(value = "Creates a new user")
    @PostMapping
    // @Valid is required for JSR Bean validation to kick in. It works with @NotEmpty etc. implemented in the POJO
-   public ResponseEntity<?> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
+   public ResponseEntity<?> createUser(@ApiParam("User information for a new user to be created") @Valid @RequestBody User user, UriComponentsBuilder builder) {
       try {
          userService.createUser(user);
          HttpHeaders httpHeaders = new HttpHeaders();
